@@ -45,6 +45,10 @@ export default {
     }
   },
   props: {
+    nodeId: {
+      type: String,
+      default: "mapChartStyleNode",
+    },
     lowColor: {
       type: String,
       default: "#fde2e2"
@@ -103,12 +107,19 @@ export default {
     return {
       legend: legend,
       position: position,
-      node: document.createElement("style"),
+      node: this.getOrCreateNode(),
       chromaScale: chroma.scale([this.$props.lowColor, this.$props.highColor])
     };
   },
-
   methods: {
+    getOrCreateNode(){
+      var node = document.getElementById(this.nodeId);
+      if (!node) {
+        node = document.createElement("style");
+        node.id = this.nodeId;
+      }
+      return node;
+    },
     onHoverCountry(country) {
       this.legend = country;
       this.position = country.position;
